@@ -7,10 +7,35 @@ public class Main {
         Comparer comparer = new Comparer();
         PrimeImplicantTable piChart = new PrimeImplicantTable();
 
-        // Use the example minterms from original code
-        Set<Integer> minterms = new HashSet<>(Arrays.asList(0,1,2,3,7,8,9,11,15));
+        // Create a scanner for user input
+        Scanner scanner = new Scanner(System.in);
+        Set<Integer> minterms = new HashSet<>();
 
-        System.out.println("Original minterms: " + minterms);
+        // Prompt user for input
+        System.out.println("Enter minterms separated by spaces (e.g. 0 1 2 3 7 8 9 11 15): ");
+        String input = scanner.nextLine().trim();
+
+        // Parse input string into integers
+        if (!input.isEmpty()) {
+            String[] mintermStrings = input.split("\\s+");
+            for (String mintermStr : mintermStrings) {
+                try {
+                    int minterm = Integer.parseInt(mintermStr);
+                    minterms.add(minterm);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input: " + mintermStr + " is not a valid number. Skipping...");
+                }
+            }
+        }
+
+        // Check if we have any valid minterms
+        if (minterms.isEmpty()) {
+            System.out.println("No valid minterms provided. Exiting...");
+            scanner.close();
+            return;
+        }
+
+        System.out.println("Processing minterms: " + minterms);
 
         // Perform the steps from the original code
         Converter.ConversionResults convertResult = converter.mintermConvert(minterms);
@@ -50,5 +75,8 @@ public class Main {
         System.out.println("\n========= FINAL RESULT =========");
         System.out.println("Minimal expression: " + expression);
         System.out.println("===============================");
+
+        // Close the scanner
+        scanner.close();
     }
 }
