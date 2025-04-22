@@ -1,7 +1,12 @@
 import java.util.*;
 
+// This module is responsible for comparing adjacent groups of binary values.
+// It groups the 6 bit binary numbers by those differ by only 1 bit.
+// Terms that cannot be grouped/merged will automatically be prime implicants.
+
 public class Comparer {
-    public void compareMinterms(Map<Integer, List<StringBuilder>> binaryGrouping, Map<Integer, List<Integer>> mintermGrouping) {
+    public Map<String, Set<Integer>> compareMinterms(Map<Integer, List<StringBuilder>> binaryGrouping,
+                                                     Map<Integer, List<Integer>> mintermGrouping) {
         Map<Integer, List<StringBuilder>> newGrouping = new HashMap<>();
         List<Integer> sortedKeys = new ArrayList<>(binaryGrouping.keySet());
         Collections.sort(sortedKeys);
@@ -122,10 +127,13 @@ public class Comparer {
 
         // Final result
         System.out.println("\nFinal Prime Implicants and Their Coverage:");
+        Map<String, Set<Integer>> finalImplicantToMinterms = new HashMap<>();
         for (String pi : uniquePrimeImplicants) {
             Set<Integer> minterms = implicantToMinterms.getOrDefault(pi, Set.of());
             System.out.println(pi + " → " + minterms);
-
+            finalImplicantToMinterms.put(pi, minterms);
         }
+
+        return finalImplicantToMinterms;
     }
 }
